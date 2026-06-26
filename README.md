@@ -148,3 +148,88 @@ To enable it: grab a free key from the Groq console, put it in `backend/.env`
 as `GROQ_API_KEY=...`, and restart the backend. Summaries are cached on disk by
 file hash (`.ai_cache.json`), so a given file is only sent to the API once
 unless its contents change.
+
+---
+
+## Usage
+
+1. Start both servers (see above) and open **http://localhost:3000**.
+2. In the top bar, enter either:
+   - a **local path** — e.g. `C:\projects\my-app`, or
+   - a **GitHub URL** — e.g. `https://github.com/pallets/flask` (it gets cloned
+     to a temp folder, analyzed, then cleaned up).
+3. Click **Analyze**. The graph renders with one node per source file.
+4. Explore:
+   - **Drag** nodes to rearrange, **scroll** to zoom, use the **minimap** to
+     navigate large repos.
+   - **Hover** a node for a quick tooltip (language, LoC, complexity).
+   - **Click** a node to open the side panel — file metrics, a code preview, and
+     the AI explanation.
+   - **Search** files from the top bar, or browse them in the left sidebar.
+   - Recently analyzed repos are remembered in a **history dropdown**.
+
+---
+
+## Features
+
+- 🗂 **Static dependency analysis** across 10+ languages — no code execution.
+- 🎨 **Language-colored nodes** sized by lines of code.
+- 🌡 **Complexity heat** — nodes/metrics colored green → yellow → red by
+  cyclomatic complexity (AST-accurate for Python).
+- 🕸 **Interactive React Flow canvas** — drag, zoom, pan, minimap, fit-view.
+- 🤖 **AI file summaries** with on-disk caching to keep API usage cheap.
+- 🔗 **GitHub URL support** — clone-and-analyze any public repo.
+- 🔍 **Search & file list** with click-to-zoom on a node.
+- 📚 **Recent-repo history** persisted in the browser.
+- 📄 **In-app file preview and README viewer**.
+
+---
+
+## API reference
+
+| Method | Endpoint             | Purpose                                              |
+|--------|----------------------|------------------------------------------------------|
+| `GET`  | `/`                  | Health check.                                        |
+| `POST` | `/api/analyze`       | Analyze a local path or GitHub URL → nodes + edges.  |
+| `POST` | `/api/explain`       | Return a cached/AI 3-sentence summary for a file.    |
+| `GET`  | `/api/file-content`  | Raw file content for the preview pane (≤ 50 KB).     |
+| `GET`  | `/api/readme`        | The repo's README, if one exists.                    |
+
+Example:
+
+```bash
+curl -X POST http://localhost:8000/api/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"path": "C:/projects/my-app", "max_depth": 8}'
+```
+
+---
+
+## Tech stack
+
+| Layer     | Tools                                                           |
+|-----------|----------------------------------------------------------------|
+| Backend   | Python, FastAPI, Uvicorn, Pydantic, httpx, Python `ast`         |
+| Frontend  | React 19, React Flow, axios, react-markdown                     |
+| AI        | Groq API (`llama-3.3-70b-versatile`)                            |
+
+---
+
+## Screenshots
+
+> _Add screenshots of your running app here (e.g. `docs/graph.png`,
+> `docs/sidepanel.png`). Capture them from http://localhost:3000 after analyzing
+> a repo._
+
+<!-- ![Graph view](docs/graph.png) -->
+<!-- ![AI side panel](docs/sidepanel.png) -->
+
+---
+
+## Notes & limitations
+
+- Dependency resolution is heuristic (regex + filename matching), so it favors
+  edges between files that actually exist in the scanned tree; external-package
+  imports are intentionally not drawn as edges.
+- Very large repositories are bounded by `max_depth` (default 8) to keep the
+  graph readable.
