@@ -85,3 +85,66 @@ repository-visualizer/
             ├── Sidebar.jsx       # legend, complexity key, file list
             └── SidePanel.jsx     # AI explanation, file preview, README tabs
 ```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- **Python 3.11+** (tested on 3.14)
+- **Node.js 18+** (tested on 24) and npm
+- **Git** (needed for the GitHub-clone feature)
+
+### 1. Backend
+
+```bash
+cd backend
+
+# create and activate a virtual environment
+python -m venv .venv
+.venv\Scripts\activate          # Windows (PowerShell/CMD)
+# source .venv/bin/activate     # macOS / Linux
+
+# install dependencies
+pip install -r requirements.txt
+
+# configure the AI key (optional — see "AI summaries" below)
+copy .env.example .env          # Windows
+# cp .env.example .env          # macOS / Linux
+# then edit .env and paste your Groq API key
+
+# run the API (http://localhost:8000)
+python run.py
+```
+
+The backend serves on **http://localhost:8000**. You can confirm it's up by
+opening that URL — it returns `{"status": "ok", ...}`. Interactive API docs are
+available at **http://localhost:8000/docs**.
+
+### 2. Frontend
+
+In a second terminal:
+
+```bash
+cd frontend
+
+npm install        # installs React, React Flow, react-markdown, axios, ...
+npm start          # opens http://localhost:3000
+```
+
+The frontend serves on **http://localhost:3000** and talks to the backend at
+`http://localhost:8000` by default. To point it elsewhere, set
+`REACT_APP_API_URL` in `frontend/.env`.
+
+### AI summaries (optional)
+
+The "Explain this file" feature uses the free
+[Groq](https://console.groq.com) API (`llama-3.3-70b-versatile`). Without a key
+the app still works — every other feature is fully functional and the explain
+panel just shows a friendly "no key configured" message.
+
+To enable it: grab a free key from the Groq console, put it in `backend/.env`
+as `GROQ_API_KEY=...`, and restart the backend. Summaries are cached on disk by
+file hash (`.ai_cache.json`), so a given file is only sent to the API once
+unless its contents change.
