@@ -72,6 +72,23 @@ def clone_repo(url: str) -> str:
         )
 
 
+def safe_join(base: str, relative: str) -> str:
+    """
+    Joins a user-supplied relative path onto a base directory and rejects any
+    result that escapes the base (e.g. via '../'). Returns the resolved path.
+    """
+    base_real = os.path.realpath(os.path.expanduser(base))
+    target = os.path.realpath(
+        os.path.join(base_real, relative.lstrip("/").lstrip("\\"))
+    )
+    if target != base_real and not target.startswith(base_real + os.sep):
+        raise HTTPException(
+            status_code=403,
+            detail="Access denied: path escapes the repository root."
+        )
+    return target
+
+
 @app.get("/")
 def root():
     return {"status": "ok", "message": "Repo Analyzer API is running"}
@@ -123,10 +140,7 @@ async def explain_file(request: AIExplainRequest):
     Reads a file and asks AI to explain it in 3 sentences.
     Uses a local cache keyed by file hash.
     """
-    file_path = os.path.join(
-        os.path.expanduser(request.repo_path),
-        request.file_path.lstrip("/").lstrip("\\")
-    )
+    file_path = safe_join(request.repo_path, request.file_path)
 
     if not os.path.exists(file_path):
         raise HTTPException(status_code=404, detail=f"File not found: {file_path}")
@@ -151,10 +165,7 @@ async def explain_file(request: AIExplainRequest):
 @app.get("/api/file-content")
 def get_file_content(repo_path: str = Query(...), file_path: str = Query(...)):
     """Returns raw file content for preview."""
-    full_path = os.path.join(
-        os.path.expanduser(repo_path),
-        file_path.lstrip("/").lstrip("\\")
-    )
+    full_path = safe_join(repo_path, file_path)
     if not os.path.exists(full_path):
         raise HTTPException(status_code=404, detail="File not found")
     try:
