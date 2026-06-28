@@ -28,6 +28,11 @@
       "react-app/jest"
     ]
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^react-markdown$": "<rootDir>/src/test-utils/reactMarkdownMock.js"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",

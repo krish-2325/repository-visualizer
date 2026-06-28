@@ -1,8 +1,12 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
+test('renders the empty state before a repository is analyzed', () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(screen.getByText(/no repository loaded/i)).toBeInTheDocument();
+});
+
+test('renders the RepoViz brand in the top bar', () => {
+  render(<App />);
+  expect(screen.getByText(/repoviz/i)).toBeInTheDocument();
 });
