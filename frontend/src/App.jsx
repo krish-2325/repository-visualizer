@@ -17,6 +17,8 @@ export default function App() {
   const [stats, setStats]               = useState(null);
   const [repoRoot, setRepoRoot]         = useState('');
   const [searchQuery, setSearchQuery]   = useState('');
+  const [showImports, setShowImports]   = useState(true);
+  const [showStructure, setShowStructure] = useState(true);
   const zoomToNodeRef                   = useRef(null);
 
   const handleAnalyze = useCallback(async (path) => {
@@ -62,6 +64,10 @@ export default function App() {
     }
   }));
 
+  const displayEdges = edges.filter(e =>
+    e.kind === 'dependency' ? showImports : showStructure
+  );
+
   return (
     <div className="app-shell">
       <TopBar
@@ -97,15 +103,38 @@ export default function App() {
             </div>
           )}
           {nodes.length > 0 && (
-            <GraphCanvas
-              nodes={displayNodes}
-              edges={edges}
-              setNodes={setNodes}
-              setEdges={setEdges}
-              onNodeClick={setSelectedNode}
-              repoRoot={repoRoot}
-              zoomToNodeRef={zoomToNodeRef}
-            />
+            <>
+              <div className="view-controls">
+                <span className="view-controls__title">View</span>
+                <label className="view-toggle">
+                  <input
+                    type="checkbox"
+                    checked={showStructure}
+                    onChange={e => setShowStructure(e.target.checked)}
+                  />
+                  <span className="view-toggle__swatch view-toggle__swatch--structure" />
+                  Folders
+                </label>
+                <label className="view-toggle">
+                  <input
+                    type="checkbox"
+                    checked={showImports}
+                    onChange={e => setShowImports(e.target.checked)}
+                  />
+                  <span className="view-toggle__swatch view-toggle__swatch--imports" />
+                  Imports
+                </label>
+              </div>
+              <GraphCanvas
+                nodes={displayNodes}
+                edges={displayEdges}
+                setNodes={setNodes}
+                setEdges={setEdges}
+                onNodeClick={setSelectedNode}
+                repoRoot={repoRoot}
+                zoomToNodeRef={zoomToNodeRef}
+              />
+            </>
           )}
         </div>
         {selectedNode && (
