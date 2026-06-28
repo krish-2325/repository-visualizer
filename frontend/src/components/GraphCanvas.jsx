@@ -12,9 +12,10 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import FileNode from './FileNode';
+import DirNode from './DirNode';
 import './GraphCanvas.css';
 
-const nodeTypes = { fileNode: FileNode };
+const nodeTypes = { fileNode: FileNode, dirNode: DirNode };
 
 const minimapStyle = {
   background: '#161b22',
