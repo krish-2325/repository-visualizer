@@ -104,6 +104,13 @@
   margin-bottom: 10px;
 }
 
+.sp-dir-hint {
+  margin-top: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #8b949e;
+}
+
 .sp-metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -55,7 +55,7 @@ export default function Sidebar({ stats, selectedNode, nodes, onZoomToNode }) {
         </div>
       </div>
 
-      {selectedNode && (
+      {selectedNode && selectedNode.data?.language !== undefined && (
         <div className="sidebar-section">
           <div className="sidebar-title">Selected File</div>
           <div className="selected-meta">

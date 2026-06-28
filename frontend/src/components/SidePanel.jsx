@@ -17,6 +17,7 @@ export default function SidePanel({ node, repoRoot, onClose }) {
 
   const filePath = node?.data?.path;
   const data     = node?.data || {};
+  const isDir    = node?.type === 'dirNode';
 
   // Reset when node changes
   useEffect(() => {
@@ -91,6 +92,23 @@ export default function SidePanel({ node, repoRoot, onClose }) {
 
       <div className="sp-path">{filePath}</div>
 
+      {isDir ? (
+        /* Directory view */
+        <div className="sp-body">
+          <div className="sp-section-title">Folder</div>
+          <div className="sp-metrics">
+            <div className="metric-card">
+              <div className="metric-value">{data.childCount ?? 0}</div>
+              <div className="metric-label">Direct children</div>
+            </div>
+          </div>
+          <p className="sp-dir-hint">
+            This is a directory node. Select a file to view its metrics, source,
+            and an AI explanation.
+          </p>
+        </div>
+      ) : (
+      <>
       {/* Tabs */}
       <div className="sp-tabs">
         <button
@@ -256,6 +274,8 @@ export default function SidePanel({ node, repoRoot, onClose }) {
             )
           )}
         </div>
+      )}
+      </>
       )}
     </div>
   );
