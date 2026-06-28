@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback } from 'react';
 import ReactFlow, {
   Background,
   Controls,
@@ -25,7 +25,7 @@ const minimapStyle = {
 function Flow({ nodes: initNodes, edges: initEdges, onNodeClick, zoomToNodeRef }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(initNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initEdges);
-  const { fitView, setCenter } = useReactFlow();
+  const { setCenter } = useReactFlow();
 
   React.useEffect(() => {
     setNodes(initNodes);
