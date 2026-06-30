@@ -77,8 +77,8 @@
 }
 
 .sp-tab--active {
-  color: #58a6ff;
-  border-bottom-color: #58a6ff;
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .sp-body {
@@ -186,7 +186,8 @@
 }
 
 .sp-ai-btn {
-  background: linear-gradient(135deg, #1f6feb, #388bfd);
+  background: var(--accent-grad);
+  background-size: 150% 150%;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -194,11 +195,13 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-position 0.4s ease;
 }
 
 .sp-ai-btn:hover {
-  opacity: 0.85;
+  background-position: 100% 100%;
+  transform: translateY(-1px);
+  box-shadow: var(--accent-glow);
 }
 
 .sp-ai-btn--small {
@@ -219,7 +222,8 @@
   width: 18px;
   height: 18px;
   border: 2px solid #21262d;
-  border-top-color: #58a6ff;
+  border-top-color: var(--accent);
+  border-right-color: var(--accent-2);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
   flex-shrink: 0;
@@ -305,7 +309,7 @@ code {
 }
 
 .sp-readme-content a {
-  color: #58a6ff;
+  color: var(--accent);
   text-decoration: none;
 }
 

@@ -18,8 +18,8 @@
 }
 
 .dir-node--root {
-  background: rgba(88, 166, 255, 0.1);
-  border-color: #58a6ff;
+  background: rgba(45, 212, 191, 0.1);
+  border-color: #2dd4bf;
 }
 
 .dir-node--selected {
@@ -27,7 +27,7 @@
 }
 
 .dir-node--root.dir-node--selected {
-  box-shadow: 0 0 0 2px #58a6ff, 0 0 16px rgba(88, 166, 255, 0.5);
+  box-shadow: 0 0 0 2px #2dd4bf, 0 0 16px rgba(45, 212, 191, 0.5);
 }
 
 .dir-node__icon {
@@ -56,8 +56,8 @@
 }
 
 .dir-node--root .dir-node__count {
-  color: #58a6ff;
-  background: rgba(88, 166, 255, 0.15);
+  color: #2dd4bf;
+  background: rgba(45, 212, 191, 0.15);
 }
 
 .dir-node__handle {

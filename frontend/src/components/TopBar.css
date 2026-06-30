@@ -19,14 +19,27 @@
 
 .brand-icon {
   font-size: 22px;
-  color: #58a6ff;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 6px rgba(163, 113, 247, 0.5));
+  animation: brand-pulse 3s ease-in-out infinite;
+}
+
+@keyframes brand-pulse {
+  0%, 100% { filter: drop-shadow(0 0 4px rgba(163, 113, 247, 0.4)); }
+  50%      { filter: drop-shadow(0 0 10px rgba(45, 212, 191, 0.6)); }
 }
 
 .brand-name {
   font-size: 16px;
   font-weight: 700;
-  color: #e6edf3;
   letter-spacing: 0.5px;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .topbar-input-group {
@@ -57,7 +70,8 @@
 }
 
 .topbar-input:focus {
-  border-color: #58a6ff;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .topbar-input::placeholder {
@@ -67,9 +81,9 @@
 .topbar-input-badge {
   position: absolute;
   right: 10px;
-  background: #1f6feb22;
-  border: 1px solid #1f6feb;
-  color: #58a6ff;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  color: var(--accent);
   font-size: 10px;
   font-weight: 700;
   padding: 2px 7px;
@@ -176,7 +190,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: #1f6feb;
+  background: var(--accent-grad);
+  background-size: 150% 150%;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -184,12 +199,18 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-position 0.4s ease;
   white-space: nowrap;
 }
 
 .topbar-btn:hover:not(:disabled) {
-  background: #388bfd;
+  background-position: 100% 100%;
+  transform: translateY(-1px);
+  box-shadow: var(--accent-glow);
+}
+
+.topbar-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .topbar-btn:disabled {
@@ -230,7 +251,8 @@
 }
 
 .topbar-search:focus {
-  border-color: #58a6ff;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
   width: 220px;
 }
 

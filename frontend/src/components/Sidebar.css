@@ -93,7 +93,8 @@
 }
 
 .sidebar-file-search:focus {
-  border-color: #58a6ff;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .sidebar-file-search::placeholder {
@@ -124,8 +125,8 @@
 }
 
 .sidebar-file-item--active {
-  background: #1f6feb22;
-  border: 1px solid #1f6feb44;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
 }
 
 .sidebar-file-dot {
@@ -149,7 +150,7 @@
 }
 
 .sidebar-file-item--active .sidebar-file-name {
-  color: #58a6ff;
+  color: var(--accent);
 }
 
 .sidebar-file-complexity {

@@ -1,3 +1,13 @@
+:root {
+  /* Vibrant accent theme (replaces the flat GitHub blue) */
+  --accent:        #a371f7;   /* violet */
+  --accent-2:      #2dd4bf;   /* teal   */
+  --accent-soft:   rgba(163, 113, 247, 0.15);
+  --accent-grad:        linear-gradient(135deg, #a371f7 0%, #2dd4bf 100%);
+  --accent-grad-hover:  linear-gradient(135deg, #b388ff 0%, #4fe3d0 100%);
+  --accent-glow:   0 0 0 1px rgba(163, 113, 247, 0.5), 0 4px 18px rgba(163, 113, 247, 0.35);
+}
+
 * {
   margin: 0;
   padding: 0;

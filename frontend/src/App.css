@@ -48,7 +48,12 @@
 .empty-icon {
   font-size: 64px;
   line-height: 1;
-  color: #21262d;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.7;
+  animation: brand-pulse 3s ease-in-out infinite;
 }
 
 .empty-state h2 {
@@ -68,7 +73,7 @@
   border: 1px solid #30363d;
   padding: 6px 12px;
   border-radius: 6px;
-  color: #58a6ff;
+  color: var(--accent);
 }
 
 .view-controls {
@@ -105,7 +110,7 @@
 }
 
 .view-toggle input {
-  accent-color: #58a6ff;
+  accent-color: var(--accent);
   cursor: pointer;
 }
 
@@ -127,7 +132,8 @@
   width: 36px;
   height: 36px;
   border: 3px solid #21262d;
-  border-top-color: #58a6ff;
+  border-top-color: var(--accent);
+  border-right-color: var(--accent-2);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
