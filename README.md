@@ -1,4 +1,4 @@
-# RepoViz — Repository Structure Analyzer & Visualizer
+# RepoViz : Repository Structure Analyzer & Visualizer
 
 RepoViz scans a local Git repository (or clones one from GitHub), maps out how
 its files depend on each other, and renders the whole thing as an interactive,
