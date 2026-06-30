@@ -158,13 +158,17 @@ unless its contents change.
    - a **local path** — e.g. `C:\projects\my-app`, or
    - a **GitHub URL** — e.g. `https://github.com/pallets/flask` (it gets cloned
      to a temp folder, analyzed, then cleaned up).
-3. Click **Analyze**. The graph renders with one node per source file.
+3. Click **Analyze**. The graph renders as a tidy tree: **directory nodes** and
+   **file nodes**, connected by dashed **folder-structure** edges and animated
+   purple **import** edges.
 4. Explore:
    - **Drag** nodes to rearrange, **scroll** to zoom, use the **minimap** to
      navigate large repos.
-   - **Hover** a node for a quick tooltip (language, LoC, complexity).
-   - **Click** a node to open the side panel — file metrics, a code preview, and
-     the AI explanation.
+   - Use the **Folders / Imports toggle** (top-right) to show or hide each edge
+     type independently.
+   - **Hover** a file node for a quick tooltip (language, LoC, complexity).
+   - **Click** a file node to open the side panel — metrics, a code preview, and
+     the AI explanation. Click a **directory** node for a folder summary.
    - **Search** files from the top bar, or browse them in the left sidebar.
    - Recently analyzed repos are remembered in a **history dropdown**.
 
@@ -173,6 +177,10 @@ unless its contents change.
 ## Features
 
 - 🗂 **Static dependency analysis** across 10+ languages — no code execution.
+- 🌳 **Folder-structure visualization** — directories rendered as nodes in a
+  tidy-tree layout (depth → x, DFS → y with parents centered on children).
+- 🔀 **Two edge types with a toggle** — dashed folder-containment edges and
+  animated import/dependency edges, each independently show/hideable.
 - 🎨 **Language-colored nodes** sized by lines of code.
 - 🌡 **Complexity heat** — nodes/metrics colored green → yellow → red by
   cyclomatic complexity (AST-accurate for Python).
@@ -182,6 +190,7 @@ unless its contents change.
 - 🔍 **Search & file list** with click-to-zoom on a node.
 - 📚 **Recent-repo history** persisted in the browser.
 - 📄 **In-app file preview and README viewer**.
+- 🔒 **Path-traversal-guarded** file endpoints (`safe_join`).
 
 ---
 
@@ -215,6 +224,31 @@ curl -X POST http://localhost:8000/api/analyze \
 
 ---
 
+## Running tests
+
+Both the backend and frontend have automated tests.
+
+**Backend** (pytest — analyzer traversal, metrics, edges, depth):
+
+```bash
+cd backend
+.venv\Scripts\activate                 # if not already active
+pip install -r requirements-dev.txt    # installs pytest
+python -m pytest -v
+```
+
+**Frontend** (React Testing Library + Jest — app smoke tests + graph layout):
+
+```bash
+cd frontend
+npm test            # watch mode
+# CI=true npm test  # run once and exit
+```
+
+Expected: backend `6 passed`, frontend `6 passed`.
+
+---
+
 ## Screenshots
 
 > _Add screenshots of your running app here (e.g. `docs/graph.png`,
@@ -226,10 +260,29 @@ curl -X POST http://localhost:8000/api/analyze \
 
 ---
 
-## Notes & limitations
+## Assumptions & design decisions
 
-- Dependency resolution is heuristic (regex + filename matching), so it favors
-  edges between files that actually exist in the scanned tree; external-package
-  imports are intentionally not drawn as edges.
-- Very large repositories are bounded by `max_depth` (default 8) to keep the
-  graph readable.
+- **Static analysis only.** Dependencies are extracted by parsing source text
+  (regex per language) — the target code is never executed, so analyzing an
+  untrusted repo is safe.
+- **Internal edges only.** An import becomes an edge only when it resolves to a
+  file that actually exists in the scanned tree. External-package imports (e.g.
+  `react`, `numpy`) are listed in a file's details but intentionally **not**
+  drawn as edges, to keep the graph focused on the project's own architecture.
+- **Heuristic resolution.** Edge resolution matches imports by relative path or
+  by filename stem; an ambiguous stem shared by multiple files is skipped rather
+  than guessed. This favors precision over recall.
+- **Bounded depth.** Traversal stops at `max_depth` (default 8) and skips noise
+  directories (`node_modules`, `.git`, `venv`, build output, …) so large repos
+  stay readable.
+- **Complexity is approximate for non-Python languages.** Python uses an exact
+  AST walk; other languages use decision-keyword counting as a close estimate.
+- **AI is optional and cached.** Summaries require a free Groq key; results are
+  cached on disk by file-content hash so unchanged files are never re-sent.
+
+## Possible extensions
+
+- Persist analyses to a database for history/diffing across runs.
+- Function/class-level dependency edges (not just file-level).
+- Export the graph as SVG/PNG, or share a permalink.
+- Circular-dependency detection and highlighting.
