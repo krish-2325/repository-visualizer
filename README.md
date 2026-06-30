@@ -249,17 +249,6 @@ Expected: backend `6 passed`, frontend `6 passed`.
 
 ---
 
-## Screenshots
-
-> _Add screenshots of your running app here (e.g. `docs/graph.png`,
-> `docs/sidepanel.png`). Capture them from http://localhost:3000 after analyzing
-> a repo._
-
-<!-- ![Graph view](docs/graph.png) -->
-<!-- ![AI side panel](docs/sidepanel.png) -->
-
----
-
 ## Assumptions & design decisions
 
 - **Static analysis only.** Dependencies are extracted by parsing source text
